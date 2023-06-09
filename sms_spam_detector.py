@@ -15,7 +15,6 @@ class SpamDetector():
         self.p_ham = None
         self.vocabulary = None
         self.features = None
-        self.results = None
 
 
     def preprocess(self, corpus):
