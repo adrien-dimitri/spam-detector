@@ -1,7 +1,7 @@
 import sms_spam_detector
 
 
-corpus = open('exercise2/data/smsspamcollection/SMSSpamCollection', 'r').readlines()
+corpus = open('/data/smsspamcollection/SMSSpamCollection', 'r').readlines()
 
 spam_dectector = sms_spam_detector.SpamDetector()
 
