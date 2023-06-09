@@ -6,6 +6,7 @@ import seaborn as sn
 import matplotlib.pyplot as plt
 import math
 
+# an example of how to use the class is given in main.py
 
 class SpamDetector():
     def __init__(self):
@@ -18,6 +19,7 @@ class SpamDetector():
 
 
     def preprocess(self, corpus):
+        # the stopwords were chosen specifically for an sms spam detection task 
         stop_words = [
         'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from', 'has', 'he', 'in', 'is', 'it', 'its', 'of', 'on', 'that', 'the',
         'to', 'was', 'were', 'will', 'with', 'you', 'your', 'u', 'ur', 'r', 'm', 'im', 'd', 'dont', 'cant', 'wont', '2', '4', 'b', 'c', 'd', 
@@ -59,6 +61,7 @@ class SpamDetector():
 
         return sms_df
     
+    # show the percentage of spam and ham in the dataset
     def show_valuecounts(self):
         print(self.preprocessed['LABEL'].value_counts(normalize=True))
     
@@ -85,6 +88,9 @@ class SpamDetector():
         self.vocabulary = vocab
         return vocab
     
+    # 2 different methods have been implements to perform feature extraction
+    # 1. Bag-of-Words, 2. Term Frequency-Inverse Document Frequency
+    # choose bow for 1. and tfidf for 2.
     def extract_features(self, mode="bow"):
         
         sms_count = len(self.training_set)
@@ -182,6 +188,7 @@ class SpamDetector():
         
         return p_spam, p_ham, parameters_spam, parameters_ham
 
+    # use auto train to perform all necessary steps for training automatically
     def auto_train(self, mode="bow"):
         self.build_vocabulary()
         self.extract_features(mode)
@@ -200,6 +207,7 @@ class SpamDetector():
         print('Correct:', correct)
         print('Incorrect:', total - correct)
         print('Accuracy:', f"{correct/total*100:1.2f}%")
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 
         correct_spam = 0
         for i, row in self.test_results.iterrows():
@@ -213,6 +221,7 @@ class SpamDetector():
         print('Total Spam predictions:', total_pred_spam)
         print('Correct Spam predictions:', correct_spam)
         print("Precision: ", f"{precision*100:1.2f}%")
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 
         correct_spam = 0
         for i, row in self.test_results.iterrows():
@@ -226,11 +235,13 @@ class SpamDetector():
         print('Total true Spam: ', total_spam)
         print('Correct Spam predictions:', correct_spam)
         print("Recall: ", f"{recall*100:1.2f}%")
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 
         f1 = 2 * (precision * recall) / (precision + recall)
         print('F1 score: ', f1)
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 
-
+    # display the confusion matrix
     def display_confusionmat(self):
         TP = 0
         FP = 0
@@ -258,7 +269,7 @@ class SpamDetector():
 
         plt.show()
     
-    
+    # testing will automatically calculate accuracy, precision, recall, and F1 score
     def test(self):
         y_pred = []
         for sms in self.testing_set['SMS']:
