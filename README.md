@@ -1,7 +1,7 @@
 SMS spam detector
 =====
 
-SMS spam detector using Python from scratch
+SMS spam detector using Python from scratch using a Naive Bayes classifier.
 
 ## Table of Contents
 * [General info](#general-info)
@@ -24,7 +24,7 @@ The SMS Spam Collection v.1 (hereafter the corpus) is a set of SMS tagged messag
 The SMS Spam Collection v.1 (text file: smsspamcollection) has a total of 4,827 SMS legitimate messages (86.6%) and a total of 747 (13.4%) spam messages.
 
 ## How it works
-For features extraction, you may choose either **Bag-of-Words** or **Term Frequency - Inverse Document Frequency**, with both giving good results. 
+For features extraction, you may choose either **Bag-of-Words** (bow) or **Term Frequency - Inverse Document Frequency** (tfidf), with both giving good results. 
 
 A **Naive Bayes Classifier** is used as the core during training which saves all the parameters of spam and ham sms messages based on the features extracted prior.
 
