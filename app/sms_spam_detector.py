@@ -104,9 +104,9 @@ class SpamDetector():
 
                 if index % 200 == 0:
                     progress = int((index/sms_count)*100)
-                    print(f"[{(progress//5*'|')}{((20-progress//5)*' ')}]", end="")
-                    print(f"    {progress}% completed :- {index} of {sms_count} sms scanned...")
-
+                    print(f"[{(progress//5*'|')}{((20-progress//5)*' ')}]    {progress}% completed :- {index} of {sms_count} sms scanned...", end="\r")
+                
+            print("\n")
             print('SCAN COMPLETE')
             
             bag_of_words_df = pd.DataFrame(word_counts_per_sms)
