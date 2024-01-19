@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spam Detector</title>
+</head>
+<body>
+    <h1>Spam Detector</h1>
+    <form id="train-form">
+        <label for="train-percentage">Train Percentage:</label>
+        <input type="number" id="train-percentage" name="train_percentage" min="1" max="99" required>
+        <br>
+        <label for="feature-extraction">Feature Extraction:</label>
+        <select id="feature-extraction" name="feature_extraction">
+            <option value="bow">Bag of Words</option>
+            <option value="tfidf">TF-IDF</option>
+        </select>
+        <br>
+        <button type="button" onclick="train()">Train</button>
+    </form>
+
+    <div id="classification-form" style="display: none;">
+        <h2>Classify the following text:</h2>
+        <p id="sample-text"></p>
+        <button type="button" onclick="classify('ham')">Ham</button>
+        <button type="button" onclick="classify('spam')">Spam</button>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        function train() {
+            var train_percentage = $("#train-percentage").val();
+            var feature_extraction = $("#feature-extraction").val();
+            $.ajax({
+                url: "/train",
+                type: "POST",
+                data: {
+                    train_percentage: train_percentage,
+                    feature_extraction: feature_extraction
+                },
+                success: function(response) {
+                    $("#train-form").hide();
+                    $("#classification-form").show();
+                    $("#sample-text").text(response.sample_text);
+                }
+            });
+        }
+
+        function classify(choice) {
+            // TODO: Implement AJAX request to send user classification to the server
+            // Update UI as needed
+        }
+    </script>
+</body>
+</html>
