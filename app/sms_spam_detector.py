@@ -146,32 +146,15 @@ class SpamDetector():
         correct = (self.test_results['LABEL'] == self.test_results['PREDICTED']).sum()
         total = len(self.test_results)
 
-        print('Correct:', correct)
-        print('Incorrect:', total - correct)
-        print('Accuracy:', f"{correct / total * 100:1.2f}%")
-        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-
         correct_spam = ((self.test_results['LABEL'] == self.test_results['PREDICTED']) & (self.test_results['PREDICTED'] == 'spam')).sum()
         total_pred_spam = (self.test_results['PREDICTED'] == 'spam').sum()
         precision = correct_spam / total_pred_spam
-
-        print('Total Spam predictions:', total_pred_spam)
-        print('Correct Spam predictions:', correct_spam)
-        print("Precision: ", f"{precision * 100:1.2f}%")
-        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 
         correct_spam = ((self.test_results['LABEL'] == self.test_results['PREDICTED']) & (self.test_results['PREDICTED'] == 'spam')).sum()
         total_spam = (self.test_results['LABEL'] == 'spam').sum()
         recall = correct_spam / total_spam
 
-        print('Total true Spam: ', total_spam)
-        print('Correct Spam predictions:', correct_spam)
-        print("Recall: ", f"{recall * 100:1.2f}%")
-        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-
         f1 = 2 * (precision * recall) / (precision + recall)
-        print('F1 score: ', f1)
-        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 
         return {
             'accuracy': correct / total * 100,
@@ -195,7 +178,6 @@ class SpamDetector():
     def test(self):
         y_pred = [self.predict(sms) for sms in self.testing_set['SMS']]
         test_df = pd.concat((pd.Series(y_pred).rename('PREDICTED'), self.testing_set), axis=1)
-        print(test_df.head())
         self.test_results = test_df
         results = self.evaluate()
         return results
