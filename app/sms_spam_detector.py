@@ -2,8 +2,8 @@ import string
 from random import sample
 import pandas as pd
 import numpy as np
-import seaborn as sn
-import matplotlib.pyplot as plt
+#import seaborn as sn
+#import matplotlib.pyplot as plt
 import math
 
 # an example of how to use the class is given in main.py
@@ -241,6 +241,7 @@ class SpamDetector():
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 
     # display the confusion matrix
+    '''
     def display_confusionmat(self):
         TP = 0
         FP = 0
@@ -267,7 +268,8 @@ class SpamDetector():
         sn.heatmap(df_cm, annot=True, annot_kws={"size": 16}, fmt='g') # font size
 
         plt.show()
-    
+    '''
+
     # testing will automatically calculate accuracy, precision, recall, and F1 score
     def test(self):
         y_pred = []
