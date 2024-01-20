@@ -4,6 +4,8 @@ import random
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = True 
 
 @app.route('/')
 def index():
@@ -19,38 +21,27 @@ def train():
     spam_detector.preprocess(corpus)
     spam_detector.train_test_split(train_percentage)
     spam_detector.auto_train(feature_extraction)
-    test_samples = random.sample(corpus, 6)
-    test_samples = [sample.split('\t')[1] for sample in test_samples]
-    test_samples_predctions = [spam_detector.predict(sample) for sample in test_samples]
-    
-    session['test_samples'] = test_samples
-    session['test_samples_predictions'] = test_samples_predctions
+
+    test_results = spam_detector.test()
+    session['test_results'] = test_results
 
     return jsonify({'message': 'Training completed successfully'})
 
-@app.route('/classify', methods=['POST', 'GET'])
-def classify():
+@app.route('/evaluateSamples', methods=['POST', 'GET'])
+def evaluateSamples():
     if request.method == 'POST':
-        user_choice = request.form['choice']
-        return jsonify({'message': 'response received'})
-    else:
-        test_samples_predictions = session.get('test_samples_predictions', [])
-        prediction = test_samples_predictions.pop()
-        session['test_samples_predictions'] = test_samples_predictions
-        return jsonify({'prediction': prediction})
-    
+        # Handle POST request
+        evaluation_results = session.get('test_results', [])
+        print("Evaluation results (POST):", evaluation_results)
 
-# get a random message to display on the web page
-@app.route('/get_random_text', methods=['GET'])
-def get_random_text():
-    test_samples = session.get('test_samples', [])
-    if test_samples:
-        test_sample_message = test_samples.pop()
-        session['test_samples'] = test_samples
-        return jsonify({'sample_text': test_sample_message})
+        return jsonify({'evaluation_results': evaluation_results})
+
     else:
-        return jsonify({'error': 'No more samples'})
-    
+        # Handle GET request
+        evaluation_results = session.get('test_results', [])
+        print("Evaluation results (GET):", evaluation_results)
+
+        return jsonify({'evaluation_results': evaluation_results})
 
 if __name__ == '__main__':
     app.run(debug=True)
