@@ -5,17 +5,21 @@ Spam Detector is a web-based application that allows users to train a machine le
 
 ## Table of Contents
 * [General info](#general-info)
+* [Deployment on PythonAnywhere](#deployment-on-pythonanywhere)
 * [Data](#data)
 * [How it works](#how-it-works)
 * [Technologies](#technologies)
 * [Requirements](#requirements)
 * [Setup](#setup)
-* [Deployment](#deployment)
+* [Deployment locally](#deployment)
 * [Contributing](#contributing)
 
 ## General Info
 This project is an SMS spam detector implemented as a Flask web application. It provides a user-friendly interface to train and evaluate a machine learning model for spam detection.
 
+## Deployment on PythonAnywhere
+
+This application is deployed on [PythonAnywhere](https://www.pythonanywhere.com/), a cloud-based Python hosting service. You can access the live application at [adriendimitri.pythonanywhere.com](https://adriendimitri.pythonanywhere.com/).
 
 ## Data
 The available data is the SMS Spam Collection Dataset from the [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/ml/index.php).
