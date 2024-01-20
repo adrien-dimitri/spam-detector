@@ -23,9 +23,12 @@
 
     <div id="classification-form" style="display: none;">
         <h2>Classify the following text:</h2>
-        <p id="sample-text"></p>
-        <button type="button" onclick="classify('ham')">Ham</button>
-        <button type="button" onclick="classify('spam')">Spam</button>
+        <button id="startprediction" type="button" onclick="get_random_text()">Start</button>
+        <div id="prediction" style="display: none;">
+            <p id="sample-text" style="display: none;"></p>
+            <button type="button" onclick="classify('ham')">Ham</button>
+            <button type="button" onclick="classify('spam')">Spam</button>
+        </div>
     </div>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -43,15 +46,44 @@
                 success: function(response) {
                     $("#train-form").hide();
                     $("#classification-form").show();
+                    $("#startprediction").show();
+                    $("prediction").hide();
                     $("#sample-text").text(response.sample_text);
-                }
+                    console.log(response);
+                },
+                
             });
         }
 
         function classify(choice) {
-            // TODO: Implement AJAX request to send user classification to the server
-            // Update UI as needed
+            $.ajax({
+                url: '/classify',
+                type: 'GET',
+                success: function(response) {
+                    $("#sample-text").text(response.sample_text);
+                    console.log(response);
+                },
+            })
+
+        }
+
+        function get_random_text() {
+            document.getElementById("startprediction").style.display = "none";
+            document.getElementById("prediction").style.display = "block";
+            document.getElementById("sample-text").style.display = "block";
+
+            $.ajax({
+                url: '/get_random_text',
+                type: 'GET',
+                success: function(response) {
+                    $("#sample-text").text(response.sample_text);
+                },
+            })
         }
     </script>
 </body>
 </html>
+
+// send data to classify POST to remember the choice
+// Predict method for message
+// get another random text when button (ham/spam) is pressed
