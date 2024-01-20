@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request, jsonify, g, session
+from flask import Flask, render_template, request, jsonify, session
 from app.sms_spam_detector import SpamDetector
-import random
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
