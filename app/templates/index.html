@@ -10,6 +10,7 @@
 </head>
 <body>
     <h1>Spam Detector</h1>
+    <button type="button" class="button reset-button" onclick="resetPage()">Reset</button>
     <form id="train-form">
         <div id="train-percentage-container">
             <label for="train-percentage">Train Percentage:</label>
@@ -129,6 +130,11 @@
                     console.error("Error during evaluation:", error);
                 }
             });
+        }
+
+        function resetPage() {
+            // Reload the page
+            location.reload();
         }
 
         // Update train percentage value display
