@@ -1,4 +1,5 @@
 Spam detector
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 =====
 
 Spam Detector is a web-based application that allows users to train a machine learning model to detect spam messages. It supports two feature extraction methods: Bag of Words (BoW) and Term Frequency-Inverse Document Frequency (TF-IDF).
@@ -34,7 +35,8 @@ For features extraction, you may choose either **Bag-of-Words** (BoW) or **Term 
 A **Naive Bayes Classifier** is used as the core during training which saves all the parameters of spam and ham sms messages based on the features extracted prior.
 
 ## Technologies
-* Python 3.10.12
+[![Python Version](https://img.shields.io/badge/Python-3.10.12-blue.svg)](https://www.python.org/downloads/release)
+
 
 ## Requirements
 * [numpy](https://numpy.org/) 1.26.3
