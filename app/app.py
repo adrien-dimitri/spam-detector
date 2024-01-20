@@ -21,16 +21,24 @@ def train():
     spam_detector.auto_train(feature_extraction)
     test_samples = random.sample(corpus, 6)
     test_samples = [sample.split('\t')[1] for sample in test_samples]
+    test_samples_predctions = [spam_detector.predict(sample) for sample in test_samples]
+    
     session['test_samples'] = test_samples
+    session['test_samples_predictions'] = test_samples_predctions
 
     return jsonify({'message': 'Training completed successfully'})
 
-@app.route('/classify', methods=['GET'])
+@app.route('/classify', methods=['POST', 'GET'])
 def classify():
-    test_samples = session.get('test_samples', [])
-    test_sample_message = test_samples.pop()
-
-    return jsonify({'sample_text': test_sample_message})
+    if request.method == 'POST':
+        user_choice = request.form['choice']
+        return jsonify({'message': 'response received'})
+    else:
+        test_samples_predictions = session.get('test_samples_predictions', [])
+        prediction = test_samples_predictions.pop()
+        session['test_samples_predictions'] = test_samples_predictions
+        return jsonify({'prediction': prediction})
+    
 
 # get a random message to display on the web page
 @app.route('/get_random_text', methods=['GET'])
