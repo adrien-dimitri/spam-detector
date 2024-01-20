@@ -1,0 +1,135 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+}
+
+form {
+    margin-top: 20px;
+}
+
+label {
+    margin-right: 10px;
+}
+
+button, .feature-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+button:hover, .feature-button:hover {
+    background-color: #45a049;
+}
+
+.button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+.selected {
+    background-color: darkgreen;
+}
+
+#classification-form {
+    display: none;
+    margin-top: 20px;
+}
+
+#prediction {
+    display: none;
+}
+
+#sample-text {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* Optional: Style for buttons */
+.loading-spinner {
+    display: none;
+    margin: 10px;
+    text-align: center; /* Center the container */
+}
+
+.loading-message {
+    display: none;
+    margin: 10px;
+    color: #333;
+    display: inline-block; /* Display the message inline */
+}
+
+/* Improved spinner styles */
+.spinner-container {
+    display: inline-block; /* Display the spinner container inline */
+    vertical-align: middle; /* Align with the middle of the text */
+    position: relative;
+    width: 24px;
+    height: 24px;
+    margin-left: 10px; /* Add some space between the message and the spinner */
+}
+
+.spinner {
+    border: 3px solid transparent;
+    border-top-color: #333;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+#train-percentage-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column; /* Align items in a column */
+}
+
+#train-percentage-value {
+    margin-bottom: 10px;
+}
+
+#feature-extraction-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column; /* Align items in a column */
+}
+
+#feature-buttons {
+    margin-top: 10px;
+}
+
+.feature-button {
+    width: 150px;
+    height: 50px;
+}
+
+.reset-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: cornflowerblue;
+}

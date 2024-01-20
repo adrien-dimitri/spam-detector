@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/index.css') }}">
+
+    <title>Spam Detector</title>
+</head>
+<body>
+    <h1>Spam Detector</h1>
+    <button type="button" class="button reset-button" onclick="resetPage()">Reset</button>
+    <form id="train-form">
+        <div id="train-percentage-container">
+            <label for="train-percentage">Train Percentage:</label>
+            <input type="range" id="train-percentage" name="train_percentage" min="1" max="99" value="80" required>
+            <span id="train-percentage-value" style="display: none;">80%</span>
+        </div>
+        <br>
+        <div id="feature-extraction-container">
+            <label>Feature Extraction:</label>
+            <div id="feature-buttons">
+                <button id="bow-button" type="button" class="feature-button button" onclick="selectFeature('bow')">Bag of Words</button>
+                <button id="tfidf-button" type="button" class="feature-button button" onclick="selectFeature('tfidf')">TF-IDF</button>
+            </div>
+            <input type="hidden" id="selected-feature" name="feature_extraction" value="bow">
+        </div>
+        <br>
+        <button type="button" class="button" onclick="train()">Train</button>
+        <div class="loading-spinner">
+            <div class="loading-message">Training in progress...</div>
+            <div class="spinner-container">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </form>
+
+    <div id="evaluation-form" style="display: none;">
+        <h2>Evaluate the model:</h2>
+        <button type="button" class="button" onclick="evaluateSamples()">Evaluate</button>
+        <div class="loading-spinner">
+            <div class="loading-message">Evaluation in progress...</div>
+            <div class="spinner-container">
+                <div class="spinner"></div>
+            </div>
+        </div>
+        <div id="evaluation-results" style="display: none;">
+            <h3>Evaluation Results:</h3>
+            <p id="accuracy"></p>
+            <p id="f1"></p>
+            <p id="precision"></p>
+            <p id="recall"></p>
+        </div>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        function selectFeature(feature) {
+            // Update the selected feature value and visual appearance
+            $("#selected-feature").val(feature);
+            $(".feature-button").removeClass("selected");
+            $("#" + feature + "-button").addClass("selected");
+        }
+
+        function train() {
+            var train_percentage = $("#train-percentage").val();
+            var feature_extraction = $("#selected-feature").val();
+
+            // Show loading spinner and message
+            $(".loading-spinner").show();
+            $(".loading-message").show();
+
+            $.ajax({
+                url: "/train",
+                type: "POST",
+                data: {
+                    train_percentage: train_percentage,
+                    feature_extraction: feature_extraction
+                },
+                success: function(response) {
+                    // Hide loading spinner and message on success
+                    $(".loading-spinner").hide();
+                    $(".loading-message").hide();
+
+                    $("#train-form").hide();
+                    $("#classification-form").show();
+                    $("#startprediction").show();
+                    $("#prediction").hide();
+                    $("#evaluation-form").show();
+                    console.log(response);
+                },
+                error: function() {
+                    // Handle errors and hide loading spinner and message
+                    $(".loading-spinner").hide();
+                    $(".loading-message").hide();
+                }
+            });
+        }
+
+        function evaluateSamples() {
+            // Show loading spinner and message for evaluation
+            $(".loading-spinner").show();
+            $(".loading-message").show();
+
+            $.ajax({
+                url: "/evaluateSamples",
+                type: "POST",
+                success: function(response) {
+                    // Hide loading spinner and message on success
+                    $(".loading-spinner").hide();
+                    $(".loading-message").hide();
+                    var evaluationResults = response['evaluation_results'];
+
+                    // Display evaluation results in the DOM
+                    $("#accuracy").text("Accuracy: " + evaluationResults['accuracy'].toFixed(2));
+                    $("#f1").text("F1 Score: " + evaluationResults['f1'].toFixed(2));
+                    $("#precision").text("Precision: " + evaluationResults['precision'].toFixed(2));
+                    $("#recall").text("Recall: " + evaluationResults['recall'].toFixed(2));
+
+                    // Show the evaluation results section
+                    $("#evaluation-results").show();
+
+                    console.log(evaluationResults);
+                },
+                error: function(error) {
+                    // Handle errors and hide loading spinner and message
+                    $(".loading-spinner").hide();
+                    $(".loading-message").hide();
+                    console.error("Error during evaluation:", error);
+                }
+            });
+        }
+
+        function resetPage() {
+            // Reload the page
+            location.reload();
+        }
+
+        // Update train percentage value display
+        $("#train-percentage").on("input change", function() {
+            $("#train-percentage-value").show();
+            $("#train-percentage-value").text($(this).val() + "%");
+        });
+    </script>
+</body>
+</html>
