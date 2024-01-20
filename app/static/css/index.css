@@ -47,3 +47,44 @@ button {
 button:hover {
     background-color: #45a049;
 }
+
+.loading-spinner {
+    display: none;
+    margin: 10px;
+    text-align: center; /* Center the container */
+}
+
+.loading-message {
+    display: none;
+    margin: 10px;
+    color: #333;
+    display: inline-block; /* Display the message inline */
+}
+
+/* CSS-only spinner */
+.spinner-container {
+    display: inline-block; /* Display the spinner container inline */
+    vertical-align: middle; /* Align with the middle of the text */
+    position: relative;
+    width: 24px;
+    height: 24px;
+    margin-left: 10px; /* Add some space between the message and the spinner */
+}
+
+.spinner {
+    border: 3px solid #ccc;
+    border-top: 3px solid #333;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}

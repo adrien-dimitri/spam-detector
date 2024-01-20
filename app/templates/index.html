@@ -21,15 +21,29 @@
         </select>
         <br>
         <button type="button" onclick="train()">Train</button>
+        <div class="loading-spinner">
+            <div class="loading-message">Training in progress...</div>
+            <div class="spinner-container">
+                <div class="spinner"></div>
+            </div>
+        </div>
     </form>
 
-    <div id="classification-form" style="display: none;">
-        <h2>Classify the following text:</h2>
-        <button id="startprediction" type="button" onclick="get_random_text()">Start</button>
-        <div id="prediction" style="display: none;">
-            <p id="sample-text" style="display: none;"></p>
-            <button type="button" onclick="classify('ham')">Ham</button>
-            <button type="button" onclick="classify('spam')">Spam</button>
+    <div id="evaluation-form" style="display: none;">
+        <h2>evaluateSamples the model:</h2>
+        <button type="button" onclick="evaluateSamples()">evaluateSamples</button>
+        <div class="loading-spinner">
+            <div class="loading-message">Evaluation in progress...</div>
+            <div class="spinner-container">
+                <div class="spinner"></div>
+            </div>
+        </div>
+        <div id="evaluation-results" style="display: none;">
+            <h3>Evaluation Results:</h3>
+            <p id="accuracy"></p>
+            <p id="f1"></p>
+            <p id="precision"></p>
+            <p id="recall"></p>
         </div>
     </div>
 
@@ -38,6 +52,11 @@
         function train() {
             var train_percentage = $("#train-percentage").val();
             var feature_extraction = $("#feature-extraction").val();
+
+            // Show loading spinner and message
+            $(".loading-spinner").show();
+            $(".loading-message").show();
+
             $.ajax({
                 url: "/train",
                 type: "POST",
@@ -46,60 +65,58 @@
                     feature_extraction: feature_extraction
                 },
                 success: function(response) {
+                    // Hide loading spinner and message on success
+                    $(".loading-spinner").hide();
+                    $(".loading-message").hide();
+
                     $("#train-form").hide();
                     $("#classification-form").show();
                     $("#startprediction").show();
-                    $("prediction").hide();
+                    $("#prediction").hide();
+                    $("#evaluation-form").show();
                     console.log(response);
                 },
-                
+                error: function() {
+                    // Handle errors and hide loading spinner and message
+                    $(".loading-spinner").hide();
+                    $(".loading-message").hide();
+                }
             });
-        }
+        };
 
-        function classify(choice) {
-            var choice = choice;
-            $.ajax({
-                url: '/classify',
-                type: 'POST',
-                data: {
-                    choice: choice,
-                    sample_text: $("#sample-text").text()
-                },
-                success: function(response) {
-                    console.log(choice);
-                },
-            })
-            $.ajax({
-                url: '/classify',
-                type: 'GET',
-                success: function(response) {
-                    console.log(response.prediction)
-                },
-            })
-            $.ajax({
-                url: '/get_random_text',
-                type: 'GET',
-                success: function(response) {
-                    $("#sample-text").text(response.sample_text);
-                    console.log(response)
-                },
-            });
+    function evaluateSamples() {
+        // Show loading spinner and message for evaluation
+        $(".loading-spinner").show();
+        $(".loading-message").show();
 
-        }
+        $.ajax({
+            url: "/evaluateSamples",
+            type: "POST",
+            success: function(response) {
+                // Hide loading spinner and message on success
+                $(".loading-spinner").hide();
+                $(".loading-message").hide();
+                var evaluationResults = response['evaluation_results'];
 
-        function get_random_text() {
-            document.getElementById("startprediction").style.display = "none";
-            document.getElementById("prediction").style.display = "block";
-            document.getElementById("sample-text").style.display = "block";
+                // Display evaluation results in the DOM
+                $("#accuracy").text("Accuracy: " + evaluationResults['accuracy'].toFixed(2));
+                $("#f1").text("F1 Score: " + evaluationResults['f1'].toFixed(2));
+                $("#precision").text("Precision: " + evaluationResults['precision'].toFixed(2));
+                $("#recall").text("Recall: " + evaluationResults['recall'].toFixed(2));
 
-            $.ajax({
-                url: '/get_random_text',
-                type: 'GET',
-                success: function(response) {
-                    $("#sample-text").text(response.sample_text);
-                },
-            })
-        }
+                // Show the evaluation results section
+                $("#evaluation-results").show();
+
+                console.log(evaluationResults);
+            },
+            error: function(error) {
+                // Handle errors and hide loading spinner and message
+                $(".loading-spinner").hide();
+                $(".loading-message").hide();
+                console.error("Error during evaluation:", error);
+            }
+        });
+    };
     </script>
 </body>
 </html>
