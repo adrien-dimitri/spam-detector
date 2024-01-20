@@ -9,7 +9,7 @@ def index():
 
 @app.route('/train', methods=['POST'])
 def train():
-    train_percentage = int(request.form['train_percentage'])
+    train_percentage = int(request.form['train_percentage'])/100
     feature_extraction = request.form['feature_extraction']
 
     corpus = open('./data/smsspamcollection/SMSSpamCollection', 'r').readlines()
