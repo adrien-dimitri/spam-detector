@@ -36,10 +36,12 @@ def classify():
 @app.route('/get_random_text', methods=['GET'])
 def get_random_text():
     test_samples = session.get('test_samples', [])
-    test_sample_message = test_samples.pop()
-    print(test_sample_message)
-
-    return jsonify({'sample_text': test_sample_message})
+    if test_samples:
+        test_sample_message = test_samples.pop()
+        session['test_samples'] = test_samples
+        return jsonify({'sample_text': test_sample_message})
+    else:
+        return jsonify({'error': 'No more samples'})
     
 
 if __name__ == '__main__':
