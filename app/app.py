@@ -20,6 +20,7 @@ def train():
     print(os.path.expanduser("~"))
 
     corpus = open(f'{home_dir}/spam-detector/data/smsspamcollection/SMSSpamCollection', 'r').readlines()
+
     spam_detector = SpamDetector()
     spam_detector.preprocess(corpus)
     spam_detector.train_test_split(train_percentage)
