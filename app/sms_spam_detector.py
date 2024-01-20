@@ -269,7 +269,28 @@ class SpamDetector():
 
         plt.show()
     '''
+    def predict(self, sms):
+        spam_prob = np.log(self.p_spam)
+        ham_prob = np.log(self.p_ham)
 
+        sms = sms.lower()
+        remove_punc = str.maketrans("", "", string.punctuation)
+        sms = sms.translate(remove_punc)
+        clean_sms = sms.split()
+        clean_sms = ['0_short_number' if word.isnumeric() and len(word)<5 else '1_long_number' if word.isnumeric() and len(word)>=5 else word for word in clean_sms ]
+        sms = clean_sms
+
+        for _, word in enumerate(self.vocabulary):
+            if word in sms:
+                spam_prob += np.log(self.parameters_spam[word])
+                ham_prob += np.log(self.parameters_ham[word])
+
+        if spam_prob > ham_prob:
+            return 'spam'
+        else:
+            return 'ham'
+        
+        
     # testing will automatically calculate accuracy, precision, recall, and F1 score
     def test(self):
         y_pred = []
