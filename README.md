@@ -1,7 +1,7 @@
-SMS spam detector
+Spam detector
 =====
 
-SMS spam detector using Python from scratch using a Naive Bayes classifier.
+Spam Detector is a web-based application that allows users to train a machine learning model to detect spam messages. It supports two feature extraction methods: Bag of Words (BoW) and Term Frequency-Inverse Document Frequency (TF-IDF).
 
 ## Table of Contents
 * [General info](#general-info)
@@ -10,11 +10,12 @@ SMS spam detector using Python from scratch using a Naive Bayes classifier.
 * [Technologies](#technologies)
 * [Requirements](#requirements)
 * [Setup](#setup)
+* [Deployment](#deployment)
+* [Contributing](#contributing)
 
-## General info
-This project is an sms spam detector implemented using Python from scratch. 
+## General Info
+This project is an SMS spam detector implemented as a Flask web application. It provides a user-friendly interface to train and evaluate a machine learning model for spam detection.
 
-It includes all necessary steps to prepare the data for training and testing such as preprocessing and feature extraction.
 
 ## Data
 The available data is the SMS Spam Collection Dataset from the [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/ml/index.php).
@@ -23,24 +24,63 @@ The SMS Spam Collection v.1 (hereafter the corpus) is a set of SMS tagged messag
 
 The SMS Spam Collection v.1 (text file: smsspamcollection) has a total of 4,827 SMS legitimate messages (86.6%) and a total of 747 (13.4%) spam messages.
 
-## How it works
-For features extraction, you may choose either **Bag-of-Words** (bow) or **Term Frequency - Inverse Document Frequency** (tfidf), with both giving good results. 
+## How it Works
+For features extraction, you may choose either **Bag-of-Words** (BoW) or **Term Frequency - Inverse Document Frequency** (TF-IDF), with both giving good results. 
 
 A **Naive Bayes Classifier** is used as the core during training which saves all the parameters of spam and ham sms messages based on the features extracted prior.
 
 ## Technologies
-* Python 3.10.6
+* Python 3.10.12
 
 ## Requirements
-* [numpy](https://numpy.org/) 1.24.3 
-* [pandas](https://pandas.pydata.org/) 2.0.1 
-* [matplotlib](https://matplotlib.org/) 3.7.1 
-* [seaborn](https://seaborn.pydata.org/) 0.12.2 
+* [numpy](https://numpy.org/) 1.26.3
+* [pandas](https://pandas.pydata.org/) 2.2.0
+* [Flask](https://flask.palletsprojects.com/) (latest version)
 
-## Setup
-1. Clone repository
-2. Use the command below to install the packages according to the configuration file requirements.txt:
+# Setup
+1. Clone the repository
+2. Navigate to the project directory:
 
-    `$ pip install -r requirements.txt`
+    ```bash
+    $ cd spam-detector
+    ```
 
-3. Run [main.py](main.py)
+3. Create a virtual environment (optional but recommended):
+   
+    ```bash
+    $ python -m venv .venv
+    ```
+
+4. Activate the virtual environment:
+
+    - On Windows:
+
+    ```bash
+    $ .venv\Scripts\activate
+    ```
+
+    - On macOS and Linux:
+
+    ```bash
+    $ source .venv/bin/activate
+    ```
+
+5. Install the required packages using the command below:
+
+    ```bash
+    $ pip install -r requirements.txt
+    ```
+
+6. Run the Flask application:
+
+    ```bash
+    $ python run.py
+    ```
+
+**Note:** It's recommended to use a virtual environment to isolate the project dependencies. If you choose not to use a virtual environment, make sure to adapt the installation command (`pip install -r requirements.txt`) accordingly.
+
+## Deployment
+Access the application by navigating to [http://localhost:5000](http://localhost:5000) in your web browser.
+
+## Contributing
+If you'd like to contribute to the development of the SMS Spam Detector, please follow the guidelines in [CONTRIBUTING.md](CONTRIBUTING.md).
