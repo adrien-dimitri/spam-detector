@@ -48,7 +48,6 @@
                     $("#classification-form").show();
                     $("#startprediction").show();
                     $("prediction").hide();
-                    $("#sample-text").text(response.sample_text);
                     console.log(response);
                 },
                 
@@ -56,14 +55,33 @@
         }
 
         function classify(choice) {
+            var choice = choice;
+            $.ajax({
+                url: '/classify',
+                type: 'POST',
+                data: {
+                    choice: choice,
+                    sample_text: $("#sample-text").text()
+                },
+                success: function(response) {
+                    console.log(choice);
+                },
+            })
             $.ajax({
                 url: '/classify',
                 type: 'GET',
                 success: function(response) {
-                    $("#sample-text").text(response.sample_text);
-                    console.log(response);
+                    console.log(response.prediction)
                 },
             })
+            $.ajax({
+                url: '/get_random_text',
+                type: 'GET',
+                success: function(response) {
+                    $("#sample-text").text(response.sample_text);
+                    console.log(response)
+                },
+            });
 
         }
 
@@ -83,7 +101,3 @@
     </script>
 </body>
 </html>
-
-// send data to classify POST to remember the choice
-// Predict method for message
-// get another random text when button (ham/spam) is pressed
